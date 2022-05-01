@@ -3,13 +3,29 @@ use glob::glob;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
+use std::env;
 
 fn main() {
-    // get list of files in cwd
-    for entry in glob("*").expect("Failed to read glob pattern") {
-        match entry {
-            Ok(path) => find(&path),
-            Err(e) => println!("{:?}", e),
+    // check for commandline args
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() < 2 {
+        // get list of files in cwd
+        for entry in glob("*").expect("Failed to read glob pattern") {
+            match entry {
+                Ok(path) => find(&path),
+                Err(e) => println!("{:?}", e),
+            }
+        }
+    } else {
+        // show only files included as arguments
+        let mut i = 0;
+        for arg in &args {
+            if i > 0 {
+                let p = Path::new(arg);
+                find(p);
+            }
+            i += 1;
         }
     }
 }
