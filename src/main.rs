@@ -5,15 +5,47 @@ use std::io::{self, BufRead};
 use std::path::Path;
 use std::env;
 
+struct TermStat {
+    line_count: u16,
+    height: u16,
+}
+
+impl Default for TermStat {
+    fn default() -> TermStat {
+        TermStat {
+            line_count: 0,
+            height: 0,
+        }
+    }
+}
+
+impl TermStat {
+    fn line_check(&mut self) {
+        self.line_count += 1;
+        if self.line_count > (self.height - 8) {
+            i_o::pause_any();
+            self.line_count = 0;
+            i_o::cls();
+        }
+    }
+}
+
 fn main() {
     // check for commandline args
     let args: Vec<String> = env::args().collect();
+    
+    let (_width, height) = i_o::tsize();
+    let mut termstat = TermStat::default();
+    termstat.height = height;
+
+    i_o::cls();
+    println!("fntoc: v{}\n", env!("CARGO_PKG_VERSION"));
 
     if args.len() < 2 {
         // get list of files in cwd
         for entry in glob("*").expect("Failed to read glob pattern") {
             match entry {
-                Ok(path) => find(&path),
+                Ok(path) => find(&path, &mut termstat),
                 Err(e) => println!("{:?}", e),
             }
         }
@@ -23,16 +55,17 @@ fn main() {
         for arg in &args {
             if i > 0 {
                 let p = Path::new(arg);
-                find(p);
+                find(p, &mut termstat);
             }
             i += 1;
         }
     }
 }
 
-fn find(path: &Path) {
+fn find(path: &Path, termstat: &mut TermStat) {
     let p: String = (&path.display()).to_string();
     println!("{}", p.blue());
+    termstat.line_check();
     let mut lines = Vec::new();
     read_file_to_vector(&path, &mut lines);
 
@@ -45,6 +78,7 @@ fn find(path: &Path) {
                 l.pop();
             }
             println!("{:>5} : {}", l_num.to_string().red(), l.trim());
+            termstat.line_check();
         }
         if line.contains("struct ") {
             let mut l = line.clone();
@@ -52,9 +86,11 @@ fn find(path: &Path) {
                 l.pop();
             }
             println!("{:>5} : {}", l_num.to_string().red(), l.trim().yellow());
+            termstat.line_check();
         }
     }
     println!("");
+    termstat.line_check();
 }
 
 fn read_file_to_vector(file_path: &Path, vector: &mut Vec<String>) {
