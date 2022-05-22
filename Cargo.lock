@@ -82,7 +82,7 @@ dependencies = [
 
 [[package]]
 name = "fntoc"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "colored",
  "glob",
@@ -116,7 +116,7 @@ dependencies = [
 
 [[package]]
 name = "i_o"
-version = "0.2.5"
+version = "0.2.7"
 dependencies = [
  "chrono",
  "colored",
