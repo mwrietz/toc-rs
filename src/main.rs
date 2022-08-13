@@ -77,7 +77,7 @@ fn find(path: &Path, termstat: &mut TermStat) {
             if l.ends_with("{") {
                 l.pop();
             }
-            println!("{:>5} : {}", l_num.to_string().red(), l.trim());
+            println!("{:>5} : {}", l_num.to_string().red(), l.trim_end());
             termstat.line_check();
         }
         if line.contains("struct ") {
@@ -85,7 +85,7 @@ fn find(path: &Path, termstat: &mut TermStat) {
             if l.ends_with("{") {
                 l.pop();
             }
-            println!("{:>5} : {}", l_num.to_string().red(), l.trim().yellow());
+            println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().yellow());
             termstat.line_check();
         }
     }
