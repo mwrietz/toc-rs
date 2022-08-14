@@ -5,6 +5,8 @@ use std::io::{self, BufRead};
 use std::path::Path;
 use std::env;
 
+mod gh_repo_status;
+
 struct TermStat {
     line_count: u16,
     height: u16,
@@ -60,6 +62,9 @@ fn main() {
             i += 1;
         }
     }
+
+    gh_repo_status::check_version()
+        .expect("check_version error");
 }
 
 fn find(path: &Path, termstat: &mut TermStat) {
