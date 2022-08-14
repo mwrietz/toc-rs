@@ -5,11 +5,12 @@ use std::io::{self, BufRead};
 use std::path::Path;
 use std::env;
 
+mod tui_gen;
 mod gh_repo_status;
 
 struct TermStat {
-    line_count: u16,
-    height: u16,
+    line_count: usize,
+    height: usize,
 }
 
 impl Default for TermStat {
@@ -25,9 +26,9 @@ impl TermStat {
     fn line_check(&mut self) {
         self.line_count += 1;
         if self.line_count > (self.height - 8) {
-            i_o::pause_any();
+            tui_gen::pause();
             self.line_count = 0;
-            i_o::cls();
+            tui_gen::cls();
         }
     }
 }
@@ -36,11 +37,11 @@ fn main() {
     // check for commandline args
     let args: Vec<String> = env::args().collect();
     
-    let (_width, height) = i_o::tsize();
+    let (_width, height) = tui_gen::tsize();
     let mut termstat = TermStat::default();
     termstat.height = height;
 
-    i_o::cls();
+    tui_gen::cls();
     println!("fntoc: v{}\n", env!("CARGO_PKG_VERSION"));
 
     if args.len() < 2 {

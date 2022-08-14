@@ -140,11 +140,13 @@ dependencies = [
 
 [[package]]
 name = "fntoc"
-version = "0.1.7"
+version = "0.1.8"
 dependencies = [
+ "chrono",
  "colored",
+ "crossterm",
+ "getch",
  "glob",
- "i_o",
  "reqwest",
 ]
 
@@ -346,16 +348,6 @@ dependencies = [
  "native-tls",
  "tokio",
  "tokio-native-tls",
-]
-
-[[package]]
-name = "i_o"
-version = "0.2.15"
-dependencies = [
- "chrono",
- "colored",
- "crossterm",
- "getch",
 ]
 
 [[package]]
