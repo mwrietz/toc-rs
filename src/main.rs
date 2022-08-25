@@ -73,6 +73,13 @@ fn find(path: &Path, termstat: &mut TermStat) {
     let p: String = (&path.display()).to_string();
     println!("{}", p.blue());
     termstat.line_check();
+
+    if !p.ends_with(".rs") {
+        println!("ignoring - not a rust source file...");
+        termstat.line_check();
+        return;
+    }
+
     let mut lines = Vec::new();
     read_file_to_vector(&path, &mut lines);
 
