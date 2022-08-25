@@ -29,6 +29,7 @@ impl TermStat {
             tui_gen::pause();
             self.line_count = 0;
             tui_gen::cls();
+            tui_gen::cmove(0, 0);
         }
     }
 }
@@ -36,7 +37,7 @@ impl TermStat {
 fn main() {
     // check for commandline args
     let args: Vec<String> = env::args().collect();
-    
+
     let (_width, height) = tui_gen::tsize();
     let mut termstat = TermStat::default();
     termstat.height = height;
