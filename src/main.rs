@@ -86,35 +86,25 @@ fn find(path: &Path, termstat: &mut TermStat) {
     let mut l_num: u32 = 0;
     for line in &lines {
         l_num += 1;
+
+        let mut l = line.clone();
+        if l.ends_with("{") {
+            l.pop();
+        }
+
         if line.contains("fn ") {
-            let mut l = line.clone();
-            if l.ends_with("{") {
-                l.pop();
-            }
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end());
             termstat.line_check();
         }
         if line.contains("struct ") {
-            let mut l = line.clone();
-            if l.ends_with("{") {
-                l.pop();
-            }
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().yellow());
             termstat.line_check();
         }
         if line.starts_with("use ") {
-            let mut l = line.clone();
-            if l.ends_with("{") {
-                l.pop();
-            }
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().cyan());
             termstat.line_check();
         }
         if line.starts_with("mod ") {
-            let mut l = line.clone();
-            if l.ends_with("{") {
-                l.pop();
-            }
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().magenta());
             termstat.line_check();
         }
