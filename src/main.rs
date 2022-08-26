@@ -75,7 +75,7 @@ fn find(path: &Path, termstat: &mut TermStat) {
     termstat.line_check();
 
     if !p.ends_with(".rs") {
-        println!("ignoring - not a rust source file...");
+        println!("ignoring - not a rust source file...\n");
         termstat.line_check();
         return;
     }
