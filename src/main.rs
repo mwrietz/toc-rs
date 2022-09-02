@@ -8,39 +8,13 @@ use std::env;
 mod tui_gen;
 mod gh_repo_status;
 
-struct TermStat {
-    line_count: usize,
-    height: usize,
-}
-
-impl Default for TermStat {
-    fn default() -> TermStat {
-        TermStat {
-            line_count: 0,
-            height: 0,
-        }
-    }
-}
-
-impl TermStat {
-    fn line_check(&mut self) {
-        self.line_count += 1;
-        if self.line_count > (self.height - 8) {
-            tui_gen::pause();
-            self.line_count = 0;
-            tui_gen::cls();
-            tui_gen::cmove(0, 0);
-        }
-    }
-}
-
 fn main() {
     // check for commandline args
     let args: Vec<String> = env::args().collect();
 
-    let (_width, height) = tui_gen::tsize();
-    let mut termstat = TermStat::default();
-    termstat.height = height;
+    //let (_width, height) = tui_gen::tsize();
+    let mut termstat = tui_gen::TermStat::default();
+    //termstat.height = height;
 
     tui_gen::cls();
     println!("fntoc: v{}\n", env!("CARGO_PKG_VERSION"));
@@ -69,7 +43,7 @@ fn main() {
         .expect("check_version error");
 }
 
-fn find(path: &Path, termstat: &mut TermStat) {
+fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
     let p: String = (&path.display()).to_string();
     println!("{}", p.blue());
     termstat.line_check();

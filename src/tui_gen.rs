@@ -1,20 +1,58 @@
+#![allow(dead_code)]
+
 use colored::Colorize;
 use crossterm::{cursor, execute};
 use getch::Getch;
 use std::io::{stdout, Write};
 use std::env;
 
-#[allow(dead_code)]
+/*
+
+//
+// usage:
+// let (_width, height) = tui_gen::tsize();
+// let mut termstat = TermStat::default();
+// termstat.height = height;
+//
+*/
+pub struct TermStat {
+    pub line_count: usize,
+    pub width: usize,
+    pub height: usize,
+}
+
+impl Default for TermStat {
+    fn default() -> TermStat {
+        let (w, h) = tsize();
+        TermStat {
+            line_count: 0,
+            width: w,
+            height: h,
+        }
+    }
+}
+
+impl TermStat {
+    pub fn line_check(&mut self) {
+        self.line_count += 1;
+        if self.line_count > (self.height - 5) {
+            pause();
+            self.line_count = 0;
+            cls();
+            cmove(0, 0);
+        }
+    }
+}
+
+
 pub fn cls() {
     std::process::Command::new("clear").status().unwrap();
 }
 
-#[allow(dead_code)]
 pub fn cmove(x: usize, y: usize) {
     execute!(stdout(), cursor::MoveTo(x as u16, y as u16)).unwrap();
 }
 
-#[allow(dead_code)]
 pub fn get_prog_name() -> String {
     let prog_name = env::current_exe()
         .expect("Can't get the exec path")
@@ -25,7 +63,6 @@ pub fn get_prog_name() -> String {
     prog_name
 }
 
-#[allow(dead_code)]
 pub fn horiz_line(color: &str) {
     for _i in 0..80 {
         print!("{}", "─".color(color).bold());
@@ -33,7 +70,6 @@ pub fn horiz_line(color: &str) {
     println!("");
 }
 
-#[allow(dead_code)]
 pub fn pause() {
     let (w, h) = tsize();
     let clear_message = "                            ";
@@ -48,7 +84,6 @@ pub fn pause() {
     print!("{}", clear_message);
 }
 
-#[allow(dead_code)]
 pub fn print_title(title_string: &str, color: &str) {
     println!("");
     for c in title_string.chars() {
@@ -60,7 +95,6 @@ pub fn print_title(title_string: &str, color: &str) {
     println!("");
 }
 
-#[allow(dead_code)]
 pub fn splash_screen(line1: &str, line2: &str) {
     //const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -86,13 +120,11 @@ pub fn splash_screen(line1: &str, line2: &str) {
     execute!(stdout(), cursor::Show).unwrap();
 }
 
-#[allow(dead_code)]
 pub fn timestamp() -> String {
     let now = chrono::Local::now();
     return now.to_string();
 }
 
-#[allow(dead_code)]
 pub fn tsize() -> (usize, usize) {
     let size = crossterm::terminal::size();
     let (w, h) = match size {
