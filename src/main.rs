@@ -18,7 +18,7 @@ fn main() {
     //termstat.height = height;
 
     tui_gen::cls();
-    println!("fntoc: v{}\n", env!("CARGO_PKG_VERSION"));
+    println!("{}: v{}\n", tui_gen::get_prog_name(), env!("CARGO_PKG_VERSION"));
 
     if args.len() < 2 {
         // get list of files in cwd

@@ -139,18 +139,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fntoc"
-version = "0.1.14"
-dependencies = [
- "chrono",
- "colored",
- "crossterm",
- "getch",
- "glob",
- "reqwest",
-]
-
-[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -888,6 +876,18 @@ name = "tinyvec_macros"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
+
+[[package]]
+name = "toc-rs"
+version = "0.2.0"
+dependencies = [
+ "chrono",
+ "colored",
+ "crossterm",
+ "getch",
+ "glob",
+ "reqwest",
+]
 
 [[package]]
 name = "tokio"
