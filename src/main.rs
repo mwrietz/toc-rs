@@ -13,16 +13,14 @@ fn main() {
     // check for commandline args
     let args: Vec<String> = env::args().collect();
 
-    //let (_width, height) = tui_gen::tsize();
     let mut termstat = tui_gen::TermStat::default();
-    //termstat.height = height;
 
     tui_gen::cls();
     println!("{}: v{}\n", tui_gen::get_prog_name(), env!("CARGO_PKG_VERSION"));
 
     if args.len() < 2 {
         // get list of files in cwd
-        for entry in glob("*").expect("Failed to read glob pattern") {
+        for entry in glob("**/*").expect("Failed to read glob pattern") {
             match entry {
                 Ok(path) => find(&path, &mut termstat),
                 Err(e) => println!("{:?}", e),
