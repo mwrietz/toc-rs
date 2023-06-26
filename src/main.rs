@@ -8,7 +8,6 @@ use std::env;
 mod tui_gen;
 mod gh_repo_status;
 
-//  asdfasdflk
 fn main() {
     // check for commandline args
     let args: Vec<String> = env::args().collect();
