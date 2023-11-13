@@ -66,20 +66,17 @@ fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
 
         if line.contains("fn ") {
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end());
-            termstat.line_check();
         }
         if line.contains("struct ") {
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().yellow());
-            termstat.line_check();
         }
         if line.starts_with("use ") {
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().cyan());
-            termstat.line_check();
         }
         if line.starts_with("mod ") {
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().magenta());
-            termstat.line_check();
         }
+        termstat.line_check();
     }
     println!("");
     termstat.line_check();
