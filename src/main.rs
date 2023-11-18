@@ -1,12 +1,12 @@
 use colored::Colorize;
 use glob::glob;
+use std::env;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
-use std::env;
 
-mod tui_gen;
 mod gh_repo_status;
+mod tui_gen;
 
 fn main() {
     // check for commandline args
@@ -15,7 +15,11 @@ fn main() {
     let mut termstat = tui_gen::TermStat::default();
 
     tui_gen::cls();
-    println!("{}: v{}\n", tui_gen::get_prog_name(), env!("CARGO_PKG_VERSION"));
+    println!(
+        "{}: v{}\n",
+        tui_gen::get_prog_name(),
+        env!("CARGO_PKG_VERSION")
+    );
 
     if args.len() < 2 {
         // get list of files in cwd
@@ -37,8 +41,7 @@ fn main() {
         }
     }
 
-    gh_repo_status::check_version()
-        .expect("check_version error");
+    gh_repo_status::check_version().expect("check_version error");
 }
 
 fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
@@ -74,7 +77,11 @@ fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
             println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().cyan());
         }
         if line.starts_with("mod ") {
-            println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().magenta());
+            println!(
+                "{:>5} : {}",
+                l_num.to_string().red(),
+                l.trim_end().magenta()
+            );
         }
         termstat.line_check();
     }

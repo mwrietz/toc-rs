@@ -3,8 +3,8 @@
 use colored::Colorize;
 use crossterm::{cursor, execute};
 use getch::Getch;
-use std::io::{stdout, Write};
 use std::env;
+use std::io::{stdout, Write};
 
 pub fn cls() {
     std::process::Command::new("clear").status().unwrap();
