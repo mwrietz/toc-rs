@@ -31,13 +31,19 @@ fn main() {
         }
     } else {
         // show only files included as arguments
-        let mut i = 0;
-        for arg in &args {
+        // let mut i = 0;
+        // for arg in &args {
+        //     if i > 0 {
+        //         let p = Path::new(arg);
+        //         find(p, &mut termstat);
+        //     }
+        //     i += 1;
+        // }
+        for (i, arg) in args.iter().enumerate() {
             if i > 0 {
                 let p = Path::new(arg);
                 find(p, &mut termstat);
             }
-            i += 1;
         }
     }
 
@@ -45,7 +51,7 @@ fn main() {
 }
 
 fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
-    let p: String = (&path.display()).to_string();
+    let p: String = (path.display()).to_string();
     println!("{}", p.blue());
     termstat.line_check();
 
@@ -56,14 +62,14 @@ fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
     }
 
     let mut lines = Vec::new();
-    read_file_to_vector(&path, &mut lines);
+    read_file_to_vector(path, &mut lines);
 
     let mut l_num: u32 = 0;
     for line in &lines {
         l_num += 1;
 
         let mut l = line.clone();
-        if l.ends_with("{") {
+        if l.ends_with('{') {
             l.pop();
         }
 
@@ -85,16 +91,19 @@ fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
         }
         termstat.line_check();
     }
-    println!("");
+    println!();
     termstat.line_check();
 }
 
 fn read_file_to_vector(file_path: &Path, vector: &mut Vec<String>) {
     if let Ok(lines) = read_lines(file_path) {
-        for line in lines {
-            if let Ok(ip) = line {
-                vector.push(ip);
-            }
+        // for line in lines {
+        //     if let Ok(ip) = line {
+        //         vector.push(ip);
+        //     }
+        // }
+        for line in lines.flatten() {
+            vector.push(line);
         }
     }
 }

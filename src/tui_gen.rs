@@ -28,7 +28,7 @@ pub fn horiz_line(color: &str) {
     for _i in 0..80 {
         print!("{}", "─".color(color).bold());
     }
-    println!("");
+    println!();
 }
 
 pub fn pause() {
@@ -46,14 +46,14 @@ pub fn pause() {
 }
 
 pub fn print_title(title_string: &str, color: &str) {
-    println!("");
+    println!();
     for c in title_string.chars() {
-        print!("{}", " ");
+        print!(" ");
         print!("{}", c.to_string().color(color).bold());
     }
-    println!("");
+    println!();
     horiz_line(color);
-    println!("");
+    println!();
 }
 
 pub fn splash_screen(line1: &str, line2: &str) {
@@ -121,7 +121,7 @@ impl TermStat {
 
 pub fn timestamp() -> String {
     let now = chrono::Local::now();
-    return now.to_string();
+    now.to_string()
 }
 
 pub fn tpos() -> (usize, usize) {

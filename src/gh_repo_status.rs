@@ -29,15 +29,16 @@ pub fn check_version() -> Result<(), Box<dyn std::error::Error>> {
     res.read_to_string(&mut body)?;
 
     // split body into vector of lines
-    let lines: Vec<&str> = body.split("\n").collect();
+    let lines: Vec<&str> = body.split('\n').collect();
 
     // find version in GitHub Cargo.toml
     let mut github_version = String::new();
     for line in lines {
         if line.starts_with("version") {
             github_version = line
-                .replace("\"", "")
-                .replace(" ", "")
+                // .replace("\"", "")
+                // .replace(" ", "")
+                .replace(['\"', ' '], "")
                 .replace("version=", "");
             break;
         }
