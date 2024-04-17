@@ -1,9 +1,10 @@
-use colored::Colorize;
 use glob::glob;
 use std::env;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
+
+use crossterm::style::Stylize;
 
 mod gh_repo_status;
 mod tui_gen;
@@ -30,15 +31,6 @@ fn main() {
             }
         }
     } else {
-        // show only files included as arguments
-        // let mut i = 0;
-        // for arg in &args {
-        //     if i > 0 {
-        //         let p = Path::new(arg);
-        //         find(p, &mut termstat);
-        //     }
-        //     i += 1;
-        // }
         for (i, arg) in args.iter().enumerate() {
             if i > 0 {
                 let p = Path::new(arg);
@@ -51,8 +43,8 @@ fn main() {
 }
 
 fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
-    let p: String = (path.display()).to_string();
-    println!("{}", p.blue());
+    let p = (path.display()).to_string();
+    println!("{}", p.clone().dark_blue());
     termstat.line_check();
 
     if !p.ends_with(".rs") {
@@ -65,28 +57,36 @@ fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
     read_file_to_vector(path, &mut lines);
 
     let mut l_num: u32 = 0;
-    for line in &lines {
+
+    for line in lines.iter_mut() {
         l_num += 1;
 
-        let mut l = line.clone();
-        if l.ends_with('{') {
-            l.pop();
+        if line.ends_with('{') {
+            line.pop();
         }
 
         if line.contains("fn ") {
-            println!("{:>5} : {}", l_num.to_string().red(), l.trim_end());
+            println!("{} : {}", format!("{:>5}", l_num).dark_red(), line.trim_end());
         }
         if line.contains("struct ") {
-            println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().yellow());
+            println!(
+                "{} : {}",
+                format!("{:>5}", l_num).dark_red(),
+                line.trim_end().dark_yellow()
+            );
         }
         if line.starts_with("use ") {
-            println!("{:>5} : {}", l_num.to_string().red(), l.trim_end().cyan());
+            println!(
+                "{} : {}",
+                format!("{:>5}", l_num).dark_red(),
+                line.trim_end().dark_cyan()
+            );
         }
         if line.starts_with("mod ") {
             println!(
-                "{:>5} : {}",
-                l_num.to_string().red(),
-                l.trim_end().magenta()
+                "{} : {}",
+                format!("{:>5}", l_num).dark_red(),
+                line.trim_end().dark_magenta()
             );
         }
         termstat.line_check();
@@ -97,11 +97,6 @@ fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
 
 fn read_file_to_vector(file_path: &Path, vector: &mut Vec<String>) {
     if let Ok(lines) = read_lines(file_path) {
-        // for line in lines {
-        //     if let Ok(ip) = line {
-        //         vector.push(ip);
-        //     }
-        // }
         for line in lines.flatten() {
             vector.push(line);
         }
