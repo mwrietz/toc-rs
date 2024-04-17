@@ -97,7 +97,7 @@ fn find(path: &Path, termstat: &mut tui_gen::TermStat) {
 
 fn read_file_to_vector(file_path: &Path, vector: &mut Vec<String>) {
     if let Ok(lines) = read_lines(file_path) {
-        for line in lines.flatten() {
+        for line in lines.map_while(Result::ok) {
             vector.push(line);
         }
     }
